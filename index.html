@@ -139,6 +139,68 @@
       <div class="body-wrap">
         
   
+    <article id="post-weak引发的一点思考" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/06/04/weak引发的一点思考/">__weak引发的一点思考</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h2><p>最近在开发中遇到了一个有趣的问题：一个对象A，被对象B的属性a弱引用。在A的<code>dealloc</code>方法中，打印<code>B-&gt;_a</code>和<code>B.a</code>的值，发现前者正常打印，后者的结果是<code>nil</code>。这很好的勾起了我的好奇心和求知欲（对于<code>__weak</code>在 Runtime的实现理解不够透彻），邃手写demo，查阅资料；经过一番谷歌和LLVM的手册的搜索后，有了答案。</p>
+<p>##分析</p>
+<p>起初以为编译器对weak属性的getter做了特殊处理，如果直接访问成员变量，则有值，不过这个假设在我修改了demo的代码以后就被推翻了：无论是通过getter访问还是直接访问成员变量，二者的值都是<code>nil</code>，只不过在控制台打印的结果二者会有不同。于是问题就变成了两个：weak属性在dealloc里的值为什么是<code>nil</code>？在<code>NSLog</code>等方法输出到控制台以后，以上两种取值方式的输出结果却不同？</p>
+<p>对demo中的<code>dealloc</code>部分代码的汇编代码进行了分析，发现了一点猫腻（以下分别是<code>__strong</code>与<code>__weak</code>属性）在dealloc中的不同（省略了干扰代码）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">0x10b6df320 &lt;+0&gt;:   pushq  %rbp</div><div class="line">0x10b6df321 &lt;+1&gt;:   movq   %rsp, %rbp</div><div class="line">0x10b6df324 &lt;+4&gt;:   subq   $0x60, %rsp</div><div class="line">0x10b6df328 &lt;+8&gt;:   movq   %rdi, -0x8(%rbp)</div><div class="line">0x10b6df32c &lt;+12&gt;:  movq   %rsi, -0x10(%rbp)</div><div class="line">0x10b6df330 &lt;+16&gt;:  movq   -0x8(%rbp), %rsi</div><div class="line">0x10b6df334 &lt;+20&gt;:  movq   0x2d3d(%rip), %rdi        ; &quot;&apos;t&apos;&quot;</div><div class="line">0x10b6df33b &lt;+27&gt;:  movq   %rdi, -0x40(%rbp)</div><div class="line">0x10b6df33f &lt;+31&gt;:  movq   %rsi, %rdi</div><div class="line">0x10b6df342 &lt;+34&gt;:  movq   -0x40(%rbp), %rsi</div><div class="line">0x10b6df346 &lt;+38&gt;:  callq  0x10b6df940               ; symbol stub for: objc_msgSend</div><div class="line">0x10b6df34b &lt;+43&gt;:  movq   %rax, %rdi</div><div class="line">0x10b6df34e &lt;+46&gt;:  callq  0x10b6df958               ; symbol stub for: objc_retainAutoreleasedReturnValue</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">0x101c17462 &lt;+82&gt;:  movq   %rax, %rdi</div><div class="line">0x101c17465 &lt;+85&gt;:  callq  0x101c17986               ; symbol stub for: objc_release</div><div class="line">0x101c1746a &lt;+90&gt;:  leaq   0x2be7(%rip), %rax        ; TObject2._ta</div><div class="line">    -&gt;  0x101c17471 &lt;+97&gt;:  movq   -0x18(%rbp), %rsi</div><div class="line">0x101c17475 &lt;+101&gt;: movq   (%rax), %rax</div><div class="line">0x101c17478 &lt;+104&gt;: addq   %rax, %rsi</div><div class="line">0x101c1747b &lt;+107&gt;: movq   %rsi, %rdi</div><div class="line">0x101c1747e &lt;+110&gt;: callq  0x101c17974               ; symbol stub for: objc_loadWeakRetained</div></pre></td></tr></table></figure>
+<p>不难发现，对于<code>__weak</code>属性的访问，编译器调用了<code>objc_loadWeakRetained</code>函数，对于这个函数，<a href="http://clang.llvm.org/docs/AutomaticReferenceCounting.html#semantics" target="_blank" rel="external">LLVM文档第4.2节</a> 给出了如下解释：</p>
+<blockquote>
+<p>Reading occurs when performing a lvalue-to-rvalue conversion on an object lvalue.<br>For __weak objects, the current pointee is retained and then released at the end of the current full-expression. This must execute atomically with respect to assignments and to the final release of the pointee.<br>For all other objects, the lvalue is loaded with primitive semantics.</p>
+<p>If object is registered as a __weak object, and the last value stored into object has not yet been deallocated or begun deallocation, retains that value and returns it. Otherwise returns null.</p>
+</blockquote>
+<p>结合该方法源码上方的一段说明：</p>
+<blockquote>
+<p>  Once upon a time we eagerly cleared *referrer if we saw the referent was deallocating. This confuses code like NSPointerFunctions which tries to pre-flight the raw storage and assumes if the storage is  zero then the weak system is done interfering.<br>That is false: the weak system is still going to check and clear the storage later.<br>This can cause objc_weak_error complaints and crashes.<br>  So we now don’t touch the storage until deallocation completes.</p>
+</blockquote>
+<p>##结果</p>
+<p>通过以上内容，我们知道了这个函数的作用：在<code>__weak</code>属性被访问时，为了确保其结果有值，或者为<code>nil</code>，不会出现<code>__unsafe_unretained</code>属性那种野指针的现象，编译器的处理为retain该对象，并加入自动释放池，在之后使用完毕后再释放。同时在<code>dealloc</code>方法中，此时对象已经处于<code>deallocation</code>的状态，<code>objc_loadWeakRetained</code>函数会返回<code>nil</code>。 第一个问题解决了！关于这个函数的实现，有兴趣的同学可以在<code>objc</code>的源码的<code>objc-weak.mm</code>中了解下，这里就不再对源码进行讲解。</p>
+<p>对于问题二，目前还在调研中，我的猜测是编译器对<code>getter</code>和成员变量取值这两种形式做了特殊处理，使用了<code>Code Generate</code>技术。由于成员变量的释放与内存清理会在<code>dealloc</code>的末尾，也就是调用<code>[super dealloc]</code>中的 <code>object_dispose</code>函数中执行，因此编译器察觉到了这一点，为了方便Log，就保留了原值。 如果你有更好的解答，请在评论中回复我，非常感谢。</p>
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      <a href="/2017/06/04/weak引发的一点思考/" class="archive-article-date">
+  	<time datetime="2017-06-04T02:52:58.000Z" itemprop="datePublished"><i class="icon-clock"></i>2017-06-04</time>
+</a>
+      
+      
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+
+
+  
     <article id="post-使用React-Native封装原生UI组件" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -164,7 +226,7 @@
 <p>为什么要做原生组件的封装呢？React Native为我们提供了很多现成组件，比如ScrollView，Navigator，TextInput；但是在实际开发中，我们许多时候中会遇到React Native没有为我们备好的组件的需求，而原生项目中已经有在用的控件了，后者往往来自于第三方库或者App自带。如果能把这些控件用JS封装好，并应用于React Native项目中，在性能上要优于后者，体验也更流畅；而React Native为我们提供了这样的入口，这是非常好的。</p>
 <h3 id="一些有用的接口"><a href="#一些有用的接口" class="headerlink" title="(一些有用的接口)"></a>(一些有用的接口)</h3><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//RCTGestureViewManager.m</span></div><div class="line"><span class="comment">/**</span></div><div class="line"></div><div class="line">RCT_EXPORT_MODULE(): 将本组件放入模块中方便JS的导入,在原生中它就是class</div><div class="line">RCT_EXPORT_METHOD(): 将一些方法导出，方便JS调用。这个宏的参数中包括JS方法名，方法的参数。参数支持 string,</div><div class="line">number, bool, function等JS类型</div><div class="line">RCT_EXPORT_VIEW_PROPERTY(): 属性导出给JS，参数为属性的名称和类型。代码如下:</div><div class="line"></div><div class="line">*/</div><div class="line"></div><div class="line"><span class="comment">//export modules methods and properties</span></div><div class="line">RCT_EXPORT_MODULE() <span class="comment">//default name is RNGesutreView</span></div><div class="line"></div><div class="line">RCT_EXPORT_VIEW_PROPERTY(onComplete, RCTBubblingEventBlock)</div><div class="line">RCT_EXPORT_VIEW_PROPERTY(nodeScale, <span class="built_in">CGFloat</span>)</div><div class="line">RCT_EXPORT_VIEW_PROPERTY(colCount, <span class="keyword">int</span>)</div><div class="line">RCT_EXPORT_VIEW_PROPERTY(backgroundImgName, <span class="built_in">NSString</span>)</div><div class="line"></div><div class="line">RCT_EXPORT_METHOD(setupNodeUI:(<span class="built_in">NSDictionary</span> *)params) &#123;</div><div class="line">  <span class="built_in">NSString</span> *nodeNormalImg = params[<span class="string">@"nodeNormal"</span>];</div><div class="line">  <span class="built_in">NSString</span> *nodeErrorImg = params[<span class="string">@"nodeError"</span>];</div><div class="line">  <span class="built_in">NSString</span> *nodeSelectImg = params[<span class="string">@"nodeSelect"</span>];</div><div class="line">  <span class="keyword">self</span>.innerView.nodeErrorImgName = nodeErrorImg;</div><div class="line">  <span class="keyword">self</span>.innerView.nodeNormalImgName = nodeNormalImg;</div><div class="line">  <span class="keyword">self</span>.innerView.nodeSelectedImgName = nodeSelectImg;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>为了方便UI组件和JS的交互，我们创建了<code>RCTGestureViewManager</code>，作为原生组件的代理，负责将组件的属性，方法，组件类导出给JS，向JS发送事件，并接收后者的回调，方法调用。<code>RCTGestureViewManager</code>需要继承于<code>RCTViewManager</code>，相应的部分JS代码则是:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">//RCTGestureView.ios.js</div><div class="line"></div><div class="line">const NativeGestureView = requireNativeComponent(&apos;RNGestureView&apos;, RNGestureView);</div><div class="line"></div><div class="line">export default class RNGestureView extends Component &#123;</div><div class="line"></div><div class="line">    _onGestureComplete(event) &#123;</div><div class="line">        if (this.props.onGestureComplete == null) &#123;</div><div class="line">            return;</div><div class="line">        &#125;</div><div class="line">        this.props.onGestureComplete(event.nativeEvent.completion)</div><div class="line">    &#125;</div><div class="line">    render() &#123;</div><div class="line">        return (</div><div class="line">            &lt;NativeGestureView</div><div class="line">            &#123;...this.props&#125; onComplete = &#123;this._onGestureComplete.bind(this)&#125;/&gt;</div><div class="line">        );</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">//static propTypes</div><div class="line">RNGestureView.propTypes = &#123;</div><div class="line">    nodeScale: PropTypes.number,</div><div class="line">    colCount: PropTypes.number,</div><div class="line">    onGestureComplete:PropTypes.func,</div><div class="line">    backgroundImgName:PropTypes.string</div><div class="line">&#125;;</div><div class="line">module.exports = RNGestureView;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line">//RCTGestureView.ios.js</div><div class="line"></div><div class="line">const GestureManager = NativeModules.RNGestureViewManager</div><div class="line">const NativeGestureView = requireNativeComponent(&apos;RNGestureView&apos;, RNGestureView);</div><div class="line">export default class RNGestureView extends Component &#123;</div><div class="line"></div><div class="line">    _onGestureComplete(event) &#123;</div><div class="line">        if (!this.props.onGestureComplete) &#123;</div><div class="line">            return;</div><div class="line">        &#125;</div><div class="line">        this.props.onGestureComplete(event.nativeEvent.completion)</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    componentDidMount() &#123;</div><div class="line">        if (this.props.nodeThemes) &#123;</div><div class="line">            GestureManager.setupNodeUI(this.props.nodeThemes);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    static propTypes = &#123;</div><div class="line">        nodeScale: PropTypes.number,</div><div class="line">        colCount: PropTypes.number,</div><div class="line">        onGestureComplete:PropTypes.func,</div><div class="line">        backgroundImgName:PropTypes.string,</div><div class="line">        nodeThemes: PropTypes.shape(&#123;</div><div class="line">            nodeNormal: PropTypes.string,</div><div class="line">            nodeError: PropTypes.string,</div><div class="line">            nodeSelect: PropTypes.string</div><div class="line">        &#125;)</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    render() &#123;</div><div class="line">        return (</div><div class="line">            &lt;NativeGestureView </div><div class="line">            &#123;...this.props&#125; onComplete = &#123;this._onGestureComplete.bind(this)&#125;/&gt;</div><div class="line">            //(event)=&gt;this.props.onGestureComplete(event.nativeEvent.completion)</div><div class="line">        );</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>其中，<code>onComplete</code>是原生组件暴露出来的调用 JS 完成特定事件的方法也就是OC中的回调 block，在手势解锁完成后，调用JS中的同名方法，并把手势连接的密码作为参数传递给 JS。</p>
 <p>另外，原生暴露出来的属性和方法在JS代码中需要相应的列出。方便JS这边的封装组件和原生进行参照比对。其中的<code>nodeScale</code>等四个字段都是<code>RCTGestureView</code>的<strong>同名属性</strong>。 <code>propTypes</code>是<code>RNGestureView</code>的类成员，负责完成以上的工作。</p>
 <p>为了检验封装是否成功，我们进行简单的测试，测试的部分代码如下:</p>
@@ -262,7 +324,7 @@
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2016 Alex Chan
+    		&copy; 2017 Alex Chan
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
