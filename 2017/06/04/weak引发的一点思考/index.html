@@ -9,21 +9,18 @@
   <title>__weak引发的一点思考 | Remiskalet</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="背景介绍最近在开发中遇到了一个有趣的问题：一个对象A，被对象B的属性a弱引用。在A的dealloc方法中，打印B-&amp;gt;_a和B.a的值，发现前者正常打印，后者的结果是nil。这很好的勾起了我的好奇心和求知欲（对于__weak在 Runtime的实现理解不够透彻），邃手写demo，查阅资料；经过一番谷歌和LLVM的手册的搜索后，有了答案。
-##分析
-起初以为编译器对weak属性的getter做了">
+分析起初以为编译器对weak属性的getter做了特殊处">
 <meta property="og:type" content="article">
 <meta property="og:title" content="__weak引发的一点思考">
 <meta property="og:url" content="http://yoursite.com/2017/06/04/weak引发的一点思考/index.html">
 <meta property="og:site_name" content="Remiskalet">
 <meta property="og:description" content="背景介绍最近在开发中遇到了一个有趣的问题：一个对象A，被对象B的属性a弱引用。在A的dealloc方法中，打印B-&amp;gt;_a和B.a的值，发现前者正常打印，后者的结果是nil。这很好的勾起了我的好奇心和求知欲（对于__weak在 Runtime的实现理解不够透彻），邃手写demo，查阅资料；经过一番谷歌和LLVM的手册的搜索后，有了答案。
-##分析
-起初以为编译器对weak属性的getter做了">
-<meta property="og:updated_time" content="2017-06-04T03:35:12.000Z">
+分析起初以为编译器对weak属性的getter做了特殊处">
+<meta property="og:updated_time" content="2017-06-04T03:38:43.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="__weak引发的一点思考">
 <meta name="twitter:description" content="背景介绍最近在开发中遇到了一个有趣的问题：一个对象A，被对象B的属性a弱引用。在A的dealloc方法中，打印B-&amp;gt;_a和B.a的值，发现前者正常打印，后者的结果是nil。这很好的勾起了我的好奇心和求知欲（对于__weak在 Runtime的实现理解不够透彻），邃手写demo，查阅资料；经过一番谷歌和LLVM的手册的搜索后，有了答案。
-##分析
-起初以为编译器对weak属性的getter做了">
+分析起初以为编译器对weak属性的getter做了特殊处">
   
     <link rel="alternative" href="/atom.xml" title="Remiskalet" type="application/atom+xml">
   
@@ -166,8 +163,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h2 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h2><p>最近在开发中遇到了一个有趣的问题：一个对象A，被对象B的属性a弱引用。在A的<code>dealloc</code>方法中，打印<code>B-&gt;_a</code>和<code>B.a</code>的值，发现前者正常打印，后者的结果是<code>nil</code>。这很好的勾起了我的好奇心和求知欲（对于<code>__weak</code>在 Runtime的实现理解不够透彻），邃手写demo，查阅资料；经过一番谷歌和LLVM的手册的搜索后，有了答案。</p>
-<p>##分析</p>
-<p>起初以为编译器对weak属性的getter做了特殊处理，如果直接访问成员变量，则有值，不过这个假设在我修改了demo的代码以后就被推翻了：无论是通过getter访问还是直接访问成员变量，二者的值都是<code>nil</code>，只不过在控制台打印的结果二者会有不同。于是问题就变成了两个：weak属性在dealloc里的值为什么是<code>nil</code>？在<code>NSLog</code>等方法输出到控制台以后，以上两种取值方式的输出结果却不同？</p>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>起初以为编译器对weak属性的getter做了特殊处理，如果直接访问成员变量，则有值，不过这个假设在我修改了demo的代码以后就被推翻了：无论是通过getter访问还是直接访问成员变量，二者的值都是<code>nil</code>，只不过在控制台打印的结果二者会有不同。于是问题就变成了两个：weak属性在dealloc里的值为什么是<code>nil</code>？在<code>NSLog</code>等方法输出到控制台以后，以上两种取值方式的输出结果却不同？</p>
 <p>对demo中的<code>dealloc</code>部分代码的汇编代码进行了分析，发现了一点猫腻（以下分别是<code>__strong</code>与<code>__weak</code>属性）在dealloc中的不同（省略了干扰代码）：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">0x10b6df320 &lt;+0&gt;:   pushq  %rbp</div><div class="line">0x10b6df321 &lt;+1&gt;:   movq   %rsp, %rbp</div><div class="line">0x10b6df324 &lt;+4&gt;:   subq   $0x60, %rsp</div><div class="line">0x10b6df328 &lt;+8&gt;:   movq   %rdi, -0x8(%rbp)</div><div class="line">0x10b6df32c &lt;+12&gt;:  movq   %rsi, -0x10(%rbp)</div><div class="line">0x10b6df330 &lt;+16&gt;:  movq   -0x8(%rbp), %rsi</div><div class="line">0x10b6df334 &lt;+20&gt;:  movq   0x2d3d(%rip), %rdi        ; &quot;&apos;t&apos;&quot;</div><div class="line">0x10b6df33b &lt;+27&gt;:  movq   %rdi, -0x40(%rbp)</div><div class="line">0x10b6df33f &lt;+31&gt;:  movq   %rsi, %rdi</div><div class="line">0x10b6df342 &lt;+34&gt;:  movq   -0x40(%rbp), %rsi</div><div class="line">0x10b6df346 &lt;+38&gt;:  callq  0x10b6df940               ; symbol stub for: objc_msgSend</div><div class="line">0x10b6df34b &lt;+43&gt;:  movq   %rax, %rdi</div><div class="line">0x10b6df34e &lt;+46&gt;:  callq  0x10b6df958               ; symbol stub for: objc_retainAutoreleasedReturnValue</div></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">0x101c17462 &lt;+82&gt;:  movq   %rax, %rdi</div><div class="line">0x101c17465 &lt;+85&gt;:  callq  0x101c17986               ; symbol stub for: objc_release</div><div class="line">0x101c1746a &lt;+90&gt;:  leaq   0x2be7(%rip), %rax        ; TObject2._ta</div><div class="line">    -&gt;  0x101c17471 &lt;+97&gt;:  movq   -0x18(%rbp), %rsi</div><div class="line">0x101c17475 &lt;+101&gt;: movq   (%rax), %rax</div><div class="line">0x101c17478 &lt;+104&gt;: addq   %rax, %rsi</div><div class="line">0x101c1747b &lt;+107&gt;: movq   %rsi, %rdi</div><div class="line">0x101c1747e &lt;+110&gt;: callq  0x101c17974               ; symbol stub for: objc_loadWeakRetained</div></pre></td></tr></table></figure>
@@ -180,8 +176,7 @@
 <blockquote>
 <p>  Once upon a time we eagerly cleared *referrer if we saw the referent was deallocating. This confuses code like NSPointerFunctions which tries to pre-flight the raw storage and assumes if the storage is  zero then the weak system is done interfering.<br>That is false: the weak system is still going to check and clear the storage later.<br>This can cause objc_weak_error complaints and crashes.<br>  So we now don’t touch the storage until deallocation completes.</p>
 </blockquote>
-<p>##结果</p>
-<p>通过以上内容，我们知道了这个函数的作用：在<code>__weak</code>属性被访问时，为了确保其结果有值，或者为<code>nil</code>，不会出现<code>__unsafe_unretained</code>属性那种野指针的现象，编译器的处理为retain该对象，并加入自动释放池，在之后使用完毕后再释放。同时在<code>dealloc</code>方法中，此时对象已经处于<code>deallocation</code>的状态，<code>objc_loadWeakRetained</code>函数会返回<code>nil</code>。 第一个问题解决了！关于这个函数的实现，有兴趣的同学可以在<code>objc</code>的源码的<code>objc-weak.mm</code>中了解下，这里就不再对源码进行讲解。</p>
+<h2 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h2><p>通过以上内容，我们知道了这个函数的作用：在<code>__weak</code>属性被访问时，为了确保其结果有值，或者为<code>nil</code>，不会出现<code>__unsafe_unretained</code>属性那种野指针的现象，编译器的处理为retain该对象，并加入自动释放池，在之后使用完毕后再释放。同时在<code>dealloc</code>方法中，此时对象已经处于<code>deallocation</code>的状态，<code>objc_loadWeakRetained</code>函数会返回<code>nil</code>。 第一个问题解决了！关于这个函数的实现，有兴趣的同学可以在<code>objc</code>的源码的<code>objc-weak.mm</code>中了解下，这里就不再对源码进行讲解。</p>
 <p>对于问题二，目前还在调研中，我的猜测是编译器对<code>getter</code>和成员变量取值这两种形式做了特殊处理，使用了<code>Code Generate</code>技术。由于成员变量的释放与内存清理会在<code>dealloc</code>的末尾，也就是调用<code>[super dealloc]</code>中的 <code>object_dispose</code>函数中执行，因此编译器察觉到了这一点，为了方便Log，就保留了原值。 如果你有更好的解答，请在评论中回复我，非常感谢。</p>
 
       
