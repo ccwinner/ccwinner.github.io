@@ -126,19 +126,40 @@
   <ul class="clearfix">
     <li class="">
       <a href="/">Overview</a></li>
-    <li class="selected">
+    <li class="">
       <a href="/archives">Posts <span class="counter">4</span></a>
     </li>
     <li class="">
       <a href="/categories">Categories <span
                 class="counter">2</span></a></li>
-    <li class="">
+    <li class="selected">
       <a href="/tags">Tags <span class="counter">2</span></a></li>
   </ul>
 </nav>
 
     <div class="body-secondary">
       <ul class="archive-list">
+        
+        <li class="archive-list-item">
+          <h2><a href="/2017/06/04/weak引发的一点思考/">__weak引发的一点思考</a></h2>
+          <p>
+               背景介绍  最近在开发中遇到了一个有趣的问题：一个对象A，被对象B的属性a弱引用。在A的 dealloc 方法中，打印 B-&amp;gt;_a 和 B.a 的值，发现前者正常打印，后者的结果是 nil 。这很好的勾起了我的好奇心和求知欲（对于 __weak 在 Runtime的实现理解不够透彻），邃...
+          </p>
+          <ul class="tag-list clearfix">
+            
+            <li class="tag-list-item"><a href="/tags/iOS/">iOS</a></li>
+            
+          </ul>
+          <div class="post-info">
+            <span>
+              
+              <a class="category-link" href="/categories/iOS/"><i class="fa fa-folder-open"></i> iOS</a>
+              
+            </span>
+            <span><i class="fa fa-tag"></i> 1 </span>
+            <span>Published {{moment(1496544778000).fromNow()}}</span>
+          </div>
+        </li>
         
         <li class="archive-list-item">
           <h2><a href="/2016/11/05/使用React-Native封装原生UI组件/">使用React Native封装原生UI组件</a></h2>
@@ -159,27 +180,6 @@
             </span>
             <span><i class="fa fa-tag"></i> 1 </span>
             <span>Published {{moment(1478341268000).fromNow()}}</span>
-          </div>
-        </li>
-        
-        <li class="archive-list-item">
-          <h2><a href="/2016/10/23/新的开始/">新的开始</a></h2>
-          <p>
-               序言  转眼工作也有一年了，一直想写点东西，算作对自己在过去时间里的总结，但是由于各种事情的耽搁，加上自己的一点轻微拖延症的影响，这个想法始终未能实现。最近这段时间，这个想法在脑海中愈发的强烈，最终我决定去注册个人域名，搭建自己的博客网站，把内心的想法付诸行动，有了这个开端，未来的写作之路相信...
-          </p>
-          <ul class="tag-list clearfix">
-            
-            <li class="tag-list-item"><a href="/tags/reflection/">reflection</a></li>
-            
-          </ul>
-          <div class="post-info">
-            <span>
-              
-              <i class="fa fa-folder-open"></i> Uncategorized
-              
-            </span>
-            <span><i class="fa fa-tag"></i> 1 </span>
-            <span>Published {{moment(1477196404000).fromNow()}}</span>
           </div>
         </li>
         

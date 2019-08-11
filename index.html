@@ -1,483 +1,485 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
+
+
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>
+    Remiskalet&#39;s blog
+  </title>
+  <meta name="description" content="null">
   
-  <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
-  <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Remiskalet</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Remiskalet">
-<meta property="og:url" content="http://yoursite.com/index.html">
-<meta property="og:site_name" content="Remiskalet">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Remiskalet">
-  
-    <link rel="alternative" href="/atom.xml" title="Remiskalet" type="application/atom+xml">
-  
-  
-    <link rel="icon" href="/favicon.png">
-  
-  <link rel="stylesheet" href="/main.css">
+  <meta name="author" content="Remiskalet">
+
+  <meta http-equiv="Cache-Control" content="no-transform"/>
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="theme-color" content="#1e2327">
+  <link rel="apple-touch-icon" href="https://github.githubassets.com/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://github.githubassets.com/apple-touch-icon-180x180.png">
+
+  <link rel="icon" type="image/x-icon" href="https://github.githubassets.com/favicon.ico">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   
 
+  
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/vue/1.0.25-csp/vue.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
 </head>
 
-<body>
-  <div id="container">
-    <div class="left-col">
-      <div class="overlay"></div>
-<div class="intrude-less">
-	<header id="header" class="inner">
-		<a href="/" class="profilepic">
-			
-			<img src="http://p1.bpimg.com/578436/882fef6067194527.jpg" class="js-avatar">
-			
-		</a>
+<body id="replica-app">
 
-		<hgroup>
-		  <h1 class="header-author"><a href="/">Alex Chan</a></h1>
-		</hgroup>
+<nav class="navbar-wrapper">
+  <div class="navbar">
+    <div class="container clearfix">
+      <a href="/" class="navbar-logo"><i class="fa fa-github"></i></a>
 
-		
+      <div class="navbar-search float-left desktop-only">
+        <div class="navbar-search-form">
+          <label for="gsc-i-id1">This website</label>
+          <div id="google-search">
+            <gcse:search></gcse:search>
+          </div>
+        </div>
+      </div>
 
-		<nav class="header-menu">
-			<ul>
-			
-				<li><a href="/">主页</a></li>
-	        
-				<li><a href="/tags/随笔">随笔</a></li>
-	        
-			</ul>
-		</nav>
-		<nav class="header-smart-menu">
-	        
-    		
-    			
-    			<a class="js-smart-menu" data-idx="0" href="javascript:void(0)">所有文章</a>
-    			
-    			
-            
-    			
-    			<a class="js-smart-menu" data-idx="1" href="javascript:void(0)">标签</a>
-    			
-    			
-            
-    			
-    			<a class="js-smart-menu" data-idx="2" href="javascript:void(0)">友链</a>
-    			
-    			
-            
-    			
-    			<a class="js-smart-menu" data-idx="3" href="javascript:void(0)">关于我</a>
-    			
-    			
-            
-		</nav>
-		<nav class="header-nav">
-			<div class="social">
-				
-					<a class="github" target="_blank" href="#" title="github">github</a>
-		        
-					<a class="weibo" target="_blank" href="#" title="weibo">weibo</a>
-		        
-					<a class="rss" target="_blank" href="#" title="rss">rss</a>
-		        
-					<a class="zhihu" target="_blank" href="#" title="zhihu">zhihu</a>
-		        
-			</div>
-		</nav>
-	</header>		
-</div>
+      <ul class="navbar-nav float-left">
+        
+        <li><a href="/archives">Archives</a></li>
+        
+        
+        <li><a href="/categories">Categories</a></li>
+        
+        
+        <li><a href="/tags">Tags</a></li>
+        
+        
+        <li class="desktop-only"><a href="/atom.xml" target="_blank">RSS</a></li>
+        
+      </ul>
 
+      <ul class="navbar-nav user-nav float-right desktop-only">
+        <li class="user-nav-notification">
+          <a><span class="user-nav-unread"></span><i class="fa fa-bell"></i></a>
+        </li>
+        <li>
+          <a><i class="fa fa-plus"></i> <i class="fa fa-caret-down"></i></a>
+        </li>
+        <li class="user-nav-logo">
+          <a><img src="https://octodex.github.com/images/baracktocat.jpg"> <i class="fa fa-caret-down"></i></i></a>
+        </li>
+      </ul>
     </div>
-    <div class="mid-col">
-      <nav id="mobile-nav">
-  	<div class="overlay">
-  		<div class="slider-trigger"><i class="icon-list"></i></div>
-  		<h1 class="header-author js-mobile-header hide">Alex Chan</h1>
-  	</div>
-	<div class="intrude-less">
-		<header id="header" class="inner">
-			<div class="profilepic">
-				
-					<img src="http://p1.bpimg.com/578436/882fef6067194527.jpg" class="js-avatar">
-				
-			</div>
-			<hgroup>
-			  <h1 class="header-author">Alex Chan</h1>
-			</hgroup>
-			
-			<nav class="header-menu">
-				<ul>
-				
-					<li><a href="/">主页</a></li>
-		        
-					<li><a href="/tags/随笔">随笔</a></li>
-		        
-				</ul>
-			</nav>
-			<nav class="header-nav">
-				<div class="social">
-					
-						<a class="github" target="_blank" href="#" title="github">github</a>
-			        
-						<a class="weibo" target="_blank" href="#" title="weibo">weibo</a>
-			        
-						<a class="rss" target="_blank" href="#" title="rss">rss</a>
-			        
-						<a class="zhihu" target="_blank" href="#" title="zhihu">zhihu</a>
-			        
-				</div>
-			</nav>
-		</header>				
-	</div>
+  </div>
 </nav>
 
-      <div class="body-wrap">
-        
-  
-    <article id="post-weak引发的一点思考" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/06/04/weak引发的一点思考/">__weak引发的一点思考</a>
-    </h1>
+<div class="main-container">
   
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h2><p>最近在开发中遇到了一个有趣的问题：一个对象A，被对象B的属性a弱引用。在A的<code>dealloc</code>方法中，打印<code>B-&gt;_a</code>和<code>B.a</code>的值，发现前者正常打印，后者的结果是<code>nil</code>。这很好的勾起了我的好奇心和求知欲（对于<code>__weak</code>在 Runtime的实现理解不够透彻），邃手写demo，查阅资料；经过一番谷歌和LLVM的手册的搜索后，有了答案。</p>
-<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>起初以为编译器对weak属性的getter做了特殊处理，如果直接访问成员变量，则有值，不过这个假设在我修改了demo的代码以后就被推翻了：无论是通过getter访问还是直接访问成员变量，二者的值都是<code>nil</code>，只不过在控制台打印的结果二者会有不同。于是问题就变成了两个：weak属性在dealloc里的值为什么是<code>nil</code>？在<code>NSLog</code>等方法输出到控制台以后，以上两种取值方式的输出结果却不同？</p>
-<p>对demo中的<code>dealloc</code>部分代码的汇编代码进行了分析，发现了一点猫腻（以下分别是<code>__strong</code>与<code>__weak</code>属性）在dealloc中的不同（省略了干扰代码）：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">0x10b6df320 &lt;+0&gt;:   pushq  %rbp</div><div class="line">0x10b6df321 &lt;+1&gt;:   movq   %rsp, %rbp</div><div class="line">0x10b6df324 &lt;+4&gt;:   subq   $0x60, %rsp</div><div class="line">0x10b6df328 &lt;+8&gt;:   movq   %rdi, -0x8(%rbp)</div><div class="line">0x10b6df32c &lt;+12&gt;:  movq   %rsi, -0x10(%rbp)</div><div class="line">0x10b6df330 &lt;+16&gt;:  movq   -0x8(%rbp), %rsi</div><div class="line">0x10b6df334 &lt;+20&gt;:  movq   0x2d3d(%rip), %rdi        ; &quot;&apos;t&apos;&quot;</div><div class="line">0x10b6df33b &lt;+27&gt;:  movq   %rdi, -0x40(%rbp)</div><div class="line">0x10b6df33f &lt;+31&gt;:  movq   %rsi, %rdi</div><div class="line">0x10b6df342 &lt;+34&gt;:  movq   -0x40(%rbp), %rsi</div><div class="line">0x10b6df346 &lt;+38&gt;:  callq  0x10b6df940               ; symbol stub for: objc_msgSend</div><div class="line">0x10b6df34b &lt;+43&gt;:  movq   %rax, %rdi</div><div class="line">0x10b6df34e &lt;+46&gt;:  callq  0x10b6df958               ; symbol stub for: objc_retainAutoreleasedReturnValue</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">0x101c17462 &lt;+82&gt;:  movq   %rax, %rdi</div><div class="line">0x101c17465 &lt;+85&gt;:  callq  0x101c17986               ; symbol stub for: objc_release</div><div class="line">0x101c1746a &lt;+90&gt;:  leaq   0x2be7(%rip), %rax        ; TObject2._ta</div><div class="line">    -&gt;  0x101c17471 &lt;+97&gt;:  movq   -0x18(%rbp), %rsi</div><div class="line">0x101c17475 &lt;+101&gt;: movq   (%rax), %rax</div><div class="line">0x101c17478 &lt;+104&gt;: addq   %rax, %rsi</div><div class="line">0x101c1747b &lt;+107&gt;: movq   %rsi, %rdi</div><div class="line">0x101c1747e &lt;+110&gt;: callq  0x101c17974               ; symbol stub for: objc_loadWeakRetained</div></pre></td></tr></table></figure>
-<p>不难发现，对于<code>__weak</code>属性的访问，编译器调用了<code>objc_loadWeakRetained</code>函数，对于这个函数，<a href="http://clang.llvm.org/docs/AutomaticReferenceCounting.html#semantics" target="_blank" rel="external">LLVM文档第4.2节</a> 给出了如下解释：</p>
-<blockquote>
-<p>Reading occurs when performing a lvalue-to-rvalue conversion on an object lvalue.<br>For __weak objects, the current pointee is retained and then released at the end of the current full-expression. This must execute atomically with respect to assignments and to the final release of the pointee.<br>For all other objects, the lvalue is loaded with primitive semantics.</p>
-<p>If object is registered as a __weak object, and the last value stored into object has not yet been deallocated or begun deallocation, retains that value and returns it. Otherwise returns null.</p>
-</blockquote>
-<p>结合该方法源码上方的一段说明：</p>
-<blockquote>
-<p>  Once upon a time we eagerly cleared *referrer if we saw the referent was deallocating. This confuses code like NSPointerFunctions which tries to pre-flight the raw storage and assumes if the storage is  zero then the weak system is done interfering.<br>That is false: the weak system is still going to check and clear the storage later.<br>This can cause objc_weak_error complaints and crashes.<br>  So we now don’t touch the storage until deallocation completes.</p>
-</blockquote>
-<h2 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h2><p>通过以上内容，我们知道了这个函数的作用：在<code>__weak</code>属性被访问时，为了确保其结果有值，或者为<code>nil</code>，不会出现<code>__unsafe_unretained</code>属性那种野指针的现象，编译器的处理为retain该对象，并加入自动释放池，在之后使用完毕后再释放。同时在<code>dealloc</code>方法中，此时对象已经处于<code>deallocation</code>的状态，<code>objc_loadWeakRetained</code>函数会返回<code>nil</code>。 第一个问题解决了！关于这个函数的实现，有兴趣的同学可以在<code>objc</code>的源码的<code>objc-weak.mm</code>中了解下，这里就不再对源码进行讲解。</p>
-<p>对于问题二，目前还在调研中，我的猜测是编译器对<code>getter</code>和成员变量取值这两种形式做了特殊处理，使用了<code>Code Generate</code>技术。由于成员变量的释放与内存清理会在<code>dealloc</code>的末尾，也就是调用<code>[super dealloc]</code>中的 <code>object_dispose</code>函数中执行，因此编译器察觉到了这一点，为了方便Log，就保留了原值。 如果你有更好的解答，请在评论中回复我，非常感谢。</p>
+<div class="container-lg">
+  
 
-      
+<div class="blog-intro">
+  <div class="blog-intro-user">
+    <img class="avatar" src="https://octodex.github.com/images/baracktocat.jpg">
+    <div class="user-name">
+      <div class="blog-title">Remiskalet&#39;s blog</div>
+      <div class="blog-author">Remiskalet</div>
+        <ul class="user-detail mobile-only">
+    
+    <li>
+      <i class="fa fa-link"></i>
+      <a href="https://www.linkedin.com/in/%E9%9C%84-%E9%99%88-366363a4">https://www.linkedin.com/in/%E9%9C%84-%E9%99%88-366363a4</a>
+    </li>
+  </ul>
     </div>
-    <div class="article-info article-info-index">
-      
-      <a href="/2017/06/04/weak引发的一点思考/" class="archive-article-date">
-  	<time datetime="2017-06-04T02:52:58.000Z" itemprop="datePublished"><i class="icon-clock"></i>2017-06-04</time>
-</a>
-      
-      
-
-      <div class="clearfix"></div>
+    <div class="blog-description">
+      null
     </div>
   </div>
-</article>
 
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-使用React-Native封装原生UI组件" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
+  <ul class="user-detail desktop-only">
     
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/11/05/使用React-Native封装原生UI组件/">使用React Native封装原生UI组件</a>
-    </h1>
-  
+    <li>
+      <i class="fa fa-link"></i>
+      <a href="https://www.linkedin.com/in/%E9%9C%84-%E9%99%88-366363a4">https://www.linkedin.com/in/%E9%9C%84-%E9%99%88-366363a4</a>
+    </li>
+  </ul>
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
+  <div class="social-media desktop-only">
+    <h4>Social Media</h4>
+    <ul>
       
-        <h3 id="（前言）"><a href="#（前言）" class="headerlink" title="（前言）"></a>（前言）</h3><p>例子的Demo在<a href="https://github.com/ccwinner/react-native-gestureunlock" target="_blank" rel="external">这里</a>由于本人工 (不) 作 (会) 忙 (Android开发)，因此下文中的原生组件以iOS为例，Android原生组件也会考虑在后面补上。</p>
-<p>由于篇幅的原因，本文不作<strong>React Native</strong>的环境搭建和如何创建项目的介绍（我没有前端开发经历哦，相信这点起步也同样难不倒你的），尚未了解的朋友可以参考以下介绍。文中的例子参考了<strong>React Native</strong> 官网的原文例子，原谅我手笨，尽管有公司前端同事的大力相助，这个小Demo依然做的磕磕碰碰，Anyway，在经过了两个晚上的不懈努力之后，我完成了预定目标，学到了不少有用的东西。对于这些我决定将自己的总结和教训分享出来，方便大家的学习，促进技术交流。</p>
-<p><a href="http://facebook.github.io/react-native/docs/getting-started.html" target="_blank" rel="external">如何搭建React Native环境</a></p>
-<p><a href="http://facebook.github.io/react-native/docs/tutorial.html" target="_blank" rel="external">React-Native开发的相关知识了解，前端开发的基本概念入门,包括框架介绍，控件布局，样式，网络请求，更多资源参考</a></p>
-<p>为什么要做原生组件的封装呢？React Native为我们提供了很多现成组件，比如ScrollView，Navigator，TextInput；但是在实际开发中，我们许多时候中会遇到React Native没有为我们备好的组件的需求，而原生项目中已经有在用的控件了，后者往往来自于第三方库或者App自带。如果能把这些控件用JS封装好，并应用于React Native项目中，在性能上要优于后者，体验也更流畅；而React Native为我们提供了这样的入口，这是非常好的。</p>
-<h3 id="一些有用的接口"><a href="#一些有用的接口" class="headerlink" title="(一些有用的接口)"></a>(一些有用的接口)</h3><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//RCTGestureViewManager.m</span></div><div class="line"><span class="comment">/**</span></div><div class="line"></div><div class="line">RCT_EXPORT_MODULE(): 将本组件放入模块中方便JS的导入,在原生中它就是class</div><div class="line">RCT_EXPORT_METHOD(): 将一些方法导出，方便JS调用。这个宏的参数中包括JS方法名，方法的参数。参数支持 string,</div><div class="line">number, bool, function等JS类型</div><div class="line">RCT_EXPORT_VIEW_PROPERTY(): 属性导出给JS，参数为属性的名称和类型。代码如下:</div><div class="line"></div><div class="line">*/</div><div class="line"></div><div class="line"><span class="comment">//export modules methods and properties</span></div><div class="line">RCT_EXPORT_MODULE() <span class="comment">//default name is RNGesutreView</span></div><div class="line"></div><div class="line">RCT_EXPORT_VIEW_PROPERTY(onComplete, RCTBubblingEventBlock)</div><div class="line">RCT_EXPORT_VIEW_PROPERTY(nodeScale, <span class="built_in">CGFloat</span>)</div><div class="line">RCT_EXPORT_VIEW_PROPERTY(colCount, <span class="keyword">int</span>)</div><div class="line">RCT_EXPORT_VIEW_PROPERTY(backgroundImgName, <span class="built_in">NSString</span>)</div><div class="line"></div><div class="line">RCT_EXPORT_METHOD(setupNodeUI:(<span class="built_in">NSDictionary</span> *)params) &#123;</div><div class="line">  <span class="built_in">NSString</span> *nodeNormalImg = params[<span class="string">@"nodeNormal"</span>];</div><div class="line">  <span class="built_in">NSString</span> *nodeErrorImg = params[<span class="string">@"nodeError"</span>];</div><div class="line">  <span class="built_in">NSString</span> *nodeSelectImg = params[<span class="string">@"nodeSelect"</span>];</div><div class="line">  <span class="keyword">self</span>.innerView.nodeErrorImgName = nodeErrorImg;</div><div class="line">  <span class="keyword">self</span>.innerView.nodeNormalImgName = nodeNormalImg;</div><div class="line">  <span class="keyword">self</span>.innerView.nodeSelectedImgName = nodeSelectImg;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>为了方便UI组件和JS的交互，我们创建了<code>RCTGestureViewManager</code>，作为原生组件的代理，负责将组件的属性，方法，组件类导出给JS，向JS发送事件，并接收后者的回调，方法调用。<code>RCTGestureViewManager</code>需要继承于<code>RCTViewManager</code>，相应的部分JS代码则是:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line">//RCTGestureView.ios.js</div><div class="line"></div><div class="line">const GestureManager = NativeModules.RNGestureViewManager</div><div class="line">const NativeGestureView = requireNativeComponent(&apos;RNGestureView&apos;, RNGestureView);</div><div class="line">export default class RNGestureView extends Component &#123;</div><div class="line"></div><div class="line">    _onGestureComplete(event) &#123;</div><div class="line">        if (!this.props.onGestureComplete) &#123;</div><div class="line">            return;</div><div class="line">        &#125;</div><div class="line">        this.props.onGestureComplete(event.nativeEvent.completion)</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    componentDidMount() &#123;</div><div class="line">        if (this.props.nodeThemes) &#123;</div><div class="line">            GestureManager.setupNodeUI(this.props.nodeThemes);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    static propTypes = &#123;</div><div class="line">        nodeScale: PropTypes.number,</div><div class="line">        colCount: PropTypes.number,</div><div class="line">        onGestureComplete:PropTypes.func,</div><div class="line">        backgroundImgName:PropTypes.string,</div><div class="line">        nodeThemes: PropTypes.shape(&#123;</div><div class="line">            nodeNormal: PropTypes.string,</div><div class="line">            nodeError: PropTypes.string,</div><div class="line">            nodeSelect: PropTypes.string</div><div class="line">        &#125;)</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    render() &#123;</div><div class="line">        return (</div><div class="line">            &lt;NativeGestureView </div><div class="line">            &#123;...this.props&#125; onComplete = &#123;this._onGestureComplete.bind(this)&#125;/&gt;</div><div class="line">            //(event)=&gt;this.props.onGestureComplete(event.nativeEvent.completion)</div><div class="line">        );</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>其中，<code>onComplete</code>是原生组件暴露出来的调用 JS 完成特定事件的方法也就是OC中的回调 block，在手势解锁完成后，调用JS中的同名方法，并把手势连接的密码作为参数传递给 JS。</p>
-<p>另外，原生暴露出来的属性和方法在JS代码中需要相应的列出。方便JS这边的封装组件和原生进行参照比对。其中的<code>nodeScale</code>等四个字段都是<code>RCTGestureView</code>的<strong>同名属性</strong>。 <code>propTypes</code>是<code>RNGestureView</code>的类成员，负责完成以上的工作。</p>
-<p>为了检验封装是否成功，我们进行简单的测试，测试的部分代码如下:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div></pre></td><td class="code"><pre><div class="line">//index.ios.js</div><div class="line"></div><div class="line">class gestureUnlock extends Component &#123;</div><div class="line">  constructor() &#123;</div><div class="line">    super()</div><div class="line">    this.state= &#123;</div><div class="line">      textContent: &apos;test for callback from native module&apos;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">  componentDidMount() &#123;</div><div class="line">    GestureViewManager.setupNodeUI(&#123;</div><div class="line">      nodeNormal: &apos;gesture_node_normal&apos;,</div><div class="line">      nodeSelect: &apos;gesture_node_highlighted&apos;</div><div class="line">    &#125;);</div><div class="line">  &#125;</div><div class="line">  render() &#123;</div><div class="line">    return (</div><div class="line">      &lt;View style=&#123;styles.container&#125;&gt;</div><div class="line">        &lt;GestureView style=&#123;styles.gesture&#125; nodeScale=&#123;74&#125; colCount=&#123;3&#125; </div><div class="line">        backgroundImgName=&apos;Home_refresh_bg&apos; onGestureComplete=&#123;(result)=&gt;&#123;</div><div class="line">          console.log(&apos;result&apos;, result);</div><div class="line">          this.setState(&#123;</div><div class="line">          textContent:result==null? &apos;callback failed&apos;:result</div><div class="line">        &#125;)&#125;&#125;/&gt;</div><div class="line">        &lt;Text style=&#123;styles.passcode&#125;&gt;</div><div class="line">          &#123;this.state.textContent&#125;</div><div class="line">        &lt;/Text&gt;</div><div class="line">      &lt;/View&gt;</div><div class="line">    );</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">const styles = StyleSheet.create(&#123;</div><div class="line">  container: &#123;</div><div class="line">    flex: 1,</div><div class="line">    justifyContent: &apos;center&apos;,</div><div class="line">    backgroundColor: &apos;blue&apos;,</div><div class="line">  &#125;,</div><div class="line">  gesture:&#123;</div><div class="line">    flex: 1,</div><div class="line">    justifyContent: &apos;center&apos;,</div><div class="line">    // backgroundColor: &apos;yellow&apos;,</div><div class="line">  &#125;,</div><div class="line">  passcode: &#123;</div><div class="line">    fontSize: 20,</div><div class="line">    textAlign: &apos;center&apos;, </div><div class="line">    margin: 10,</div><div class="line">    color: &apos;white&apos;</div><div class="line">  &#125;,</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-<p>运行中和手势动作结束后的效果:</p>
-<p><img src="http://p1.bpimg.com/578436/603ed7fbf79d2813.png" alt=""><br><img src="http://p1.bpimg.com/578436/3addc09f128a3b24.png" alt=""></p>
-<p><code>componentDidMount</code>是声明周期方法，对React Native中的对象运行的生命周期感兴趣的朋友可以参考<a href="https://facebook.github.io/react/docs/react-component.html" target="_blank" rel="external">说明</a></p>
-<h3 id="结束语"><a href="#结束语" class="headerlink" title="(结束语)"></a>(结束语)</h3><p>在本例中，原生向JS发送事件是通过<code>RCTBubblingEventBlock</code>，这是封装好的可以在OC中使用的 block。当调用时，会调用JS中的同名方法。</p>
-<p>另外一个发送事件的方法是使用<code>eventDispatcher</code>，并在JS代码中注册监听同名的事件。至于这两个方法在封装原生控件这一操作上哪个更好，我还没有得到适合的答案，希望对此熟悉的朋友可以告诉我。</p>
-<p>在这里推荐一个不错的<a href="https://github.com/jondot/awesome-react-native" target="_blank" rel="external">学习React Native的网站</a>，收集了架构，数据流，应用状态的监听等资料介绍。</p>
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      <a href="/2016/11/05/使用React-Native封装原生UI组件/" class="archive-article-date">
-  	<time datetime="2016-11-05T10:21:08.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-11-05</time>
-</a>
-      
-      
-
-      <div class="clearfix"></div>
-    </div>
+    </ul>
   </div>
-</article>
+</div>
 
 
-
-
-
-
-
-
-
-
-  
-    <article id="post-新的开始" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
+  <div class="blog-detail">
     
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
+<nav class="blog-detail-nav desktop-only">
+  <ul class="clearfix">
+    <li class="selected">
+      <a href="/">Overview</a></li>
+    <li class="">
+      <a href="/archives">Posts <span class="counter">4</span></a>
+    </li>
+    <li class="">
+      <a href="/categories">Categories <span
+                class="counter">2</span></a></li>
+    <li class="">
+      <a href="/tags">Tags <span class="counter">2</span></a></li>
+  </ul>
+</nav>
+
+    <div class="body-secondary">
+      <p class="right-title">Recent post</p>
+      <ul class="recent-post clearfix">
         
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/10/23/新的开始/">新的开始</a>
-    </h1>
-  
+        <li class="recent-post-item">
+          <div class="clearfix">
+            <h5 class="post-title text-ellipsis">
+              <i class="fa fa-bars"></i>
+              <a href="/2019/08/11/对于三年的工作小结/">对于三年的工作小结</a>
+            </h5>
+            <p class="post-description text-ellipsis desktop-only">
+               [TOC] 
+   正篇  技术和生活的现象。 
+   技术方面    iOS  iOS开发没有专
+            </p>
+            <p class="post-info desktop-only">
+              <span>
+                
+                  <a class="category-link" href="/categories/reflection/"><i class="fa fa-folder-open"></i> reflection</a>
+                
+              </span>
+              <span><i class="fa fa-tag"></i> 1 </span>
+            </p>
+          </div>
+        </li>
+        
+        <li class="recent-post-item">
+          <div class="clearfix">
+            <h5 class="post-title text-ellipsis">
+              <i class="fa fa-bars"></i>
+              <a href="/2017/06/04/weak引发的一点思考/">__weak引发的一点思考</a>
+            </h5>
+            <p class="post-description text-ellipsis desktop-only">
+                 背景介绍  最近在开发中遇到了一个有趣的问题：一个对象A，被对象B的属性a弱引用。在A的 de
+            </p>
+            <p class="post-info desktop-only">
+              <span>
+                
+                  <a class="category-link" href="/categories/iOS/"><i class="fa fa-folder-open"></i> iOS</a>
+                
+              </span>
+              <span><i class="fa fa-tag"></i> 1 </span>
+            </p>
+          </div>
+        </li>
+        
+        <li class="recent-post-item">
+          <div class="clearfix">
+            <h5 class="post-title text-ellipsis">
+              <i class="fa fa-bars"></i>
+              <a href="/2016/11/05/使用React-Native封装原生UI组件/">使用React Native封装原生UI组件</a>
+            </h5>
+            <p class="post-description text-ellipsis desktop-only">
+                 （前言）  例子的Demo在 这里 由于本人工 (不) 作 (会) 忙 (Android开发)
+            </p>
+            <p class="post-info desktop-only">
+              <span>
+                
+                  <a class="category-link" href="/categories/iOS/"><i class="fa fa-folder-open"></i> iOS</a>
+                
+              </span>
+              <span><i class="fa fa-tag"></i> 1 </span>
+            </p>
+          </div>
+        </li>
+        
+        <li class="recent-post-item">
+          <div class="clearfix">
+            <h5 class="post-title text-ellipsis">
+              <i class="fa fa-bars"></i>
+              <a href="/2016/10/23/新的开始/">新的开始</a>
+            </h5>
+            <p class="post-description text-ellipsis desktop-only">
+                 序言  转眼工作也有一年了，一直想写点东西，算作对自己在过去时间里的总结，但是由于各种事情的耽
+            </p>
+            <p class="post-info desktop-only">
+              <span>
+                
+                  <i class="fa fa-folder-open"></i> Uncategorized
+                
+              </span>
+              <span><i class="fa fa-tag"></i> 1 </span>
+            </p>
+          </div>
+        </li>
+        
+      </ul>
+      <div class="calendar-container" id="calendar">
+  <div class="calendar">
+    <h3>
+      {{posts.length}} contributions in the last year
+    </h3>
+    <div class="calendar-graph-container">
+      <div class="calendar-graph">
+        <svg width="676" height="104" @mouseout="mouseoverDate=null">
+          <g transform="translate(16, 20)">
+            <g v-for="week in calendar" :transform="week.transform">
+              <rect v-for="day in week.days"
+                    :x="day.x"
+                    :y="day.y"
+                    :fill="day.fill"
+                    @click="selectedDate=day.date"
+                    @mouseover="mouseoverDate=day.date"
+                    :class="{active:selectedDate===day.date}"
+                    data-count="{{day.posts.length}}"
+                    data-date="{{day.date}}"
+                    class="day" width="10" height="10"
+              ></rect>
+            </g>
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="序言"><a href="#序言" class="headerlink" title="序言"></a>序言</h2><p>转眼工作也有一年了，一直想写点东西，算作对自己在过去时间里的总结，但是由于各种事情的耽搁，加上自己的一点轻微拖延症的影响，这个想法始终未能实现。最近这段时间，这个想法在脑海中愈发的强烈，最终我决定去注册个人域名，搭建自己的博客网站，把内心的想法付诸行动，有了这个开端，未来的写作之路相信会逐渐铺延展开，我也会定期在上面分享生活和工作中的体会心得。</p>
-<h2 id="回顾"><a href="#回顾" class="headerlink" title="回顾"></a>回顾</h2><p>毕业离开学校到现在的这一年里，我陆续跳槽两次，经历一次转型，从当初死磕大数据到最后选择移动开发，这期间的过程充满了艰辛和无奈，可以说，自14年底读研以来，我就走了一年多的弯路，错过和浪费了多次校招的机会，在深圳广州之间来往了多次，期间电话面试了多个知名互联网公司，跑到北京后也没有松懈，在收到某通信公司的offer以后，我理应松口气，但是当时一点也高兴不起来。</p>
-<p>因为我知道，这不是我理想的工作，第一是工作的方向不喜欢，如果最后是这种结局，我还不如本科毕业的时候就找工作去28呢，可能待遇和环境还比这个工作好些。第二是我认为我应该去更好的互联网公司，做更上手的工作，拿比现在更好的待遇，而不是以先锻炼几年再跳槽来当借口安慰自己一时的胆怯和不自信。</p>
-<p>我开始反思自己过去的种种应聘失败的原因：自己的失败一方面是时机把握不对，在面一家电商公司的大数据开发时候已经进入了二面，但是因为对未来的发展摇摆不定，放弃了继续面试的想法；另一方面是<strong>准备不足</strong>，过于迷信运气，<strong>不知道当务之急是什么</strong>，海投简历，乱闯一气，最后却竹篮打水一场空。还有一点，<em>我投递大数据开发是严重的从众心理，忽略了自己的长处，以自己的弱项去生搬硬套</em>，最后只能自吞苦果。</p>
-<p>痛定思痛以后，我决定放手一搏，选择目前应届生竞争相对较小的移动开发作为我进入互联网的切入点，为了有充分的时间去自学，我选择了离职。在这里我要感谢自己的爸妈，在关键时候给予了自己充分的支持和肯定，也感谢自己的表妹，把mac借给了我去学习。方向确定，决心坚定，就没有不成功的道理，尽管学习的那段时间很辛苦，早起晚归，但是我知道那是在和时间赛跑，在与命运相搏，此时若松懈放弃，就再没回头的路。几个月后，我如愿以偿拿到了一家创业公司的offer，得到了比之前的公司高近一倍的薪水，工作也走上了正轨。</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>人不可能重复地犯同一个错误，不怕屡次跌倒，就怕不去思考和总结自己失败的原因；像个无头苍蝇一样在乱撞，只会跌的更惨。在工作中，我也时常把从这段经历中得到的教训作为前车之鉴来警戒自己。要懂得把握机遇，要懂得知足，对自己的能力和未来要做到心中有数；<strong>永远要知道目前正在做的是什么</strong>,这些对今后尽可能地少走弯路，减少犯相同错误有着极大的帮助。</p>
-<blockquote>
-<p>2016年10月于HomeLink</p>
-</blockquote>
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      <a href="/2016/10/23/新的开始/" class="archive-article-date">
-  	<time datetime="2016-10-23T04:20:04.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-10-23</time>
-</a>
-      
-      
-
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
+            <text v-for="month in monthLabels"
+                  :x="month.x"
+                  y="-5"
+                  class="month">{{month.text}}
+            </text>
 
 
-
-
-
-
-
-
-
-
-  
-  
-
-
+            <text text-anchor="start" class="wday" dx="-14" dy="8"
+                  style="display: none;">S
+            </text>
+            <text text-anchor="start" class="wday" dx="-14" dy="20">Mon</text>
+            <text text-anchor="start" class="wday" dx="-14" dy="32"
+                  style="display: none;">T
+            </text>
+            <text text-anchor="start" class="wday" dx="-14" dy="44">Wed</text>
+            <text text-anchor="start" class="wday" dx="-14" dy="57"
+                  style="display: none;">T
+            </text>
+            <text text-anchor="start" class="wday" dx="-14" dy="69">Fri</text>
+            <text text-anchor="start" class="wday" dx="-14" dy="81"
+                  style="display: none;">S
+            </text>
+          </g>
+        </svg>
+        <div class="svg-tip svg-tip-one-line"
+             v-bind:style="{ top: svgtip.top, left: svgtip.left, display: svgtip.display}">
+          <strong>{{svgtip.text}}</strong> on
+          {{moment(mouseoverDate).format('MMM DD, YYYY')}}
+        </div>
       </div>
-      <footer id="footer">
-  <div class="outer">
-    <div id="footer-info">
-    	<div class="footer-left">
-    		&copy; 2017 Alex Chan
-    	</div>
-      	<div class="footer-right">
-      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
-      	</div>
+      <div class="calendar-footer clearfix">
+      <span>
+        <a href="#">Learn how we count contributions.</a>
+      </span>
+        <div class="calendar-legend">
+          <span>Less</span>
+          <ul class="legend">
+            <li style="background-color: #eee"></li>
+            <li style="background-color: #d6e685"></li>
+            <li style="background-color: #8cc665"></li>
+            <li style="background-color: #44a340"></li>
+            <li style="background-color: #1e6823"></li>
+          </ul>
+          <span>More</span>
+        </div>
+      </div>
     </div>
   </div>
-</footer>
-    </div>
-    <script>
-	var yiliaConfig = {
-		fancybox: true,
-		mathjax: false,
-		animate: true,
-		isHome: true,
-		isPost: false,
-		isArchive: false,
-		isTag: false,
-		isCategory: false,
-		open_in_new: false,
-		root: "/",
-		innerArchive: true
-	}
+
+  <h3>Contribution activity</h3>
+  <div class="contribution-list">
+    <ul>
+      <li v-for="post in posts | filterBy selectedDate in 'date'">
+        <a href="{{post.url}}">{{post.title}}
+        </a>
+        <span>{{post.date}}</span>
+      </li>
+    </ul>
+  </div>
+</div>
+
+
+<script>
+  var posts = [{"date":"2019-08-11","title":"对于三年的工作小结","url":"https://www.linkedin.com/in/%E9%9C%84-%E9%99%88-366363a4/2019/08/11/对于三年的工作小结/"}];
+  var today = moment().format('YYYY-MM-DD');
+  var oneYearAgo = moment(today).subtract(1, 'years');
+  posts = posts.filter(function(post) {
+    return new Date(post.date) > oneYearAgo;
+  });
+  var monthLabels = [];
+  var monthName = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  var calendar = getCalendar(posts);
+
+  var dateRange = {
+    start: moment(oneYearAgo).format('MMM D, YYYY'),
+    end: moment().format('MMM D, YYYY')
+  }
+
+  var app = new Vue({
+    el: '#calendar',
+    data: {
+      posts: posts,
+      selectedDate: null,
+      calendar: calendar,
+      dateRange: dateRange,
+      mouseoverDate: null,
+      moment: moment,
+      monthLabels: monthLabels
+    },
+    created: function() {
+      this.selectedDate = 'none';
+    },
+    methods: {},
+    computed: {
+      svgtip: function() {
+        var date = this.mouseoverDate;
+        var display = date ? 'block' : 'none';
+        if (date) {
+          var coordinator = getIndexByDate(date);
+          var x = coordinator[0];
+          var y = coordinator[1];
+          var len = this.calendar[x].days[y].posts.length;
+          var text = len ? len + ' contributions' : 'No contributions';
+          var left = coordinator[0] * 12 - 37 + 'px';
+          coordinator[1] = coordinator[0] ? coordinator[1] : coordinator[1] + oneYearAgo.day();
+          var top = coordinator[1] * 12 + 12 - 32 + 'px';
+        }
+        return {
+          text: text,
+          left: left,
+          top: top,
+          display: display
+        }
+      }
+    }
+  });
+
+  function getCalendar(posts) {
+    // raw calendar
+    var maxCount = 0;
+    var tmr = new Date();
+    tmr.setDate(tmr.getDate() + 1);
+    var tmrStr = tmr.toISOString().slice(0, 10);
+    var date = new Date();
+    date.setYear(date.getFullYear() - 1); // start date is a year ago;
+    var calendar = [];
+    while (date.toISOString().slice(0, 10) !== tmrStr) {
+      var day = date.getDay();
+      if (day === 0 || calendar.length === 0) {
+        var x = calendar.length * 13;
+        calendar.push({
+          transform: 'translate(' + x + ',0)',
+          days: []
+        })
+      }
+
+      calendar[calendar.length - 1].days.push({
+        x: 14 - calendar.length,
+        y: day * 12,
+        date: date.toISOString().slice(0, 10),
+        posts: []
+      });
+
+      if (day === 0 && date.getDate() < 8) {
+        monthLabels.push({
+          x: 14 - calendar.length + x,
+          text: monthName[date.getMonth() - 1]
+        })
+      }
+
+      date.setDate(date.getDate() + 1);
+    }
+
+    // handle post info
+    posts.forEach(function(post) {
+      var x = getIndexByDate(post.date)[0];
+      var y = getIndexByDate(post.date)[1];
+
+      calendar[x].days[y].posts.push({
+        title: post.title,
+        url: post.url
+      });
+
+      var len = calendar[x].days[y].posts.length;
+      maxCount = Math.max(len, maxCount);
+    })
+
+    // handle fill color
+    calendar.forEach(function(week) {
+      week.days.forEach(function(day) {
+        day.fill = getColorByLength(day.posts.length, maxCount);
+      })
+    })
+
+    return calendar;
+  }
+
+  function getIndexByDate(date) {
+    date = moment(date);
+    var firstColumnLen = 7 - oneYearAgo.day();
+    var days = date.diff(oneYearAgo, 'days');
+
+    var x = days > firstColumnLen - 1 ? Math.ceil((days - firstColumnLen + 1) / 7) : 0;
+    var y = days > firstColumnLen - 1 ? date.day() : date.day() - oneYearAgo.day();
+    return [x, y];
+  }
+
+  function getColorByLength(len, max) {
+    var colors = ['#eee', '#d6e685', '#8cc665', '#44a340', '#1e6823'];
+    var colorsLen = colors.length - 1;
+    var color = len ? colors[0] : colors[1];
+    var interval = max / colorsLen;
+    if (max < colorsLen) {
+      color = colors[len];
+    } else {
+      color = colors[Math.ceil(len / interval)];
+    }
+    return color;
+  }
+
 </script>
 
-<script src="/./main.js"></script>
-
-
-    
-<div class="tools-col">
-  <ul class="btn-wrap">
-    
-      <li class="chose" data-hook="tools-section-all"><span class="text">全部</span><i class="icon-book"></i></li>
-    
-    
-      <li data-hook="tools-section-tag"><span class="text">标签</span><i class="icon-price-tags"></i></li>
-    
-    
-      <li data-hook="tools-section-friends"><span class="text">友链</span><i class="icon-link"></i></li>
-    
-    
-      <li data-hook="tools-section-me"><span class="text">我</span><i class="icon-smile"></i></li>
-    
-  </ul>
-  <div class="tools-wrap">
-    
-    	<section class="tools-section tools-section-all chose">
-    	</section>
-    
-
-    
-    	<section class="tools-section tools-section-tag">
-    			<div class="widget tagcloud" id="js-tagcloud">
-    				
-    			</div>
-    	</section>
-    
-
-    
-    	<section class="tools-section tools-section-friends">
-  		
-  			<div class="friends-wrap" id="js-friends">
-  			
-  	          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">友情链接1</a>
-  	        
-  	          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">友情链接2</a>
-  	        
-  	          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">友情链接3</a>
-  	        
-  	          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">友情链接4</a>
-  	        
-  	          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">友情链接5</a>
-  	        
-  	          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">友情链接6</a>
-  	        
-  	        </div>
-  		
-    	</section>
-    
-
-    
-    	<section class="tools-section tools-section-me">
-  	  	
-  	  		<div class="aboutme-wrap" id="js-aboutme">很惭愧&lt;br&gt;&lt;br&gt;只做了一点微小的工作&lt;br&gt;谢谢大家</div>
-  	  	
-    	</section>
-    
-  </div>
-  
-</div>
-    <!-- Root element of PhotoSwipe. Must have class pswp. -->
-<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
-
-    <!-- Background of PhotoSwipe. 
-         It's a separate element as animating opacity is faster than rgba(). -->
-    <div class="pswp__bg"></div>
-
-    <!-- Slides wrapper with overflow:hidden. -->
-    <div class="pswp__scroll-wrap">
-
-        <!-- Container that holds slides. 
-            PhotoSwipe keeps only 3 of them in the DOM to save memory.
-            Don't modify these 3 pswp__item elements, data is added later on. -->
-        <div class="pswp__container">
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-        </div>
-
-        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
-        <div class="pswp__ui pswp__ui--hidden">
-
-            <div class="pswp__top-bar">
-
-                <!--  Controls are self-explanatory. Order can be changed. -->
-
-                <div class="pswp__counter"></div>
-
-                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-
-                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
-
-                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-
-                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-
-                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
-                <!-- element will get class pswp__preloader--active when preloader is running -->
-                <div class="pswp__preloader">
-                    <div class="pswp__preloader__icn">
-                      <div class="pswp__preloader__cut">
-                        <div class="pswp__preloader__donut"></div>
-                      </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-                <div class="pswp__share-tooltip"></div> 
-            </div>
-
-            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
-            </button>
-
-            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-            </button>
-
-            <div class="pswp__caption">
-                <div class="pswp__caption__center"></div>
-            </div>
-
-        </div>
 
     </div>
+  </div>
+</div>
 
 </div>
-  </div>
+
+<div class="footer-wrapper container">
+  <footer class="footer clearfix">
+    <div class="clearfix">
+    <a href="https://www.linkedin.com/in/%E9%9C%84-%E9%99%88-366363a4" class="footer-logo">
+      <i class="fa fa-github"></i>
+    </a>
+    <ul class="footer-social-link">
+      <li>© 2019 Remiskalet</li>
+      <li><a href="https://www.linkedin.com/in/%E9%9C%84-%E9%99%88-366363a4">Home</a></li>
+      
+    </ul>
+    <div class="footer-theme-info">
+      Theme <a href="//github.com/sabrinaluo/hexo-theme-replica">Replica</a>
+      by <a href="//github.com/sabrinaluo">Hiitea</a> ❤ Powered by Hexo
+    </div>
+    </div>
+    
+  </footer>
+</div>
+
+
+
+
+<script src="/js/main.js"></script>
+
 </body>
 </html>

@@ -1,171 +1,144 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
+
+
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>
+    使用React Native封装原生UI组件 | Remiskalet&#39;s blog
+  </title>
+  <meta name="description" content="null">
   
-  <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
-  <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>使用React Native封装原生UI组件 | Remiskalet</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="（前言）例子的Demo在这里由于本人工 (不) 作 (会) 忙 (Android开发)，因此下文中的原生组件以iOS为例，Android原生组件也会考虑在后面补上。
-由于篇幅的原因，本文不作React Native的环境搭建和如何创建项目的介绍（我没有前端开发经历哦，相信这点起步也同样难不倒你的），尚未了解的朋友可以参考以下介绍。文中的例子参考了React Native 官网的原文例子，原谅我手笨">
-<meta property="og:type" content="article">
-<meta property="og:title" content="使用React Native封装原生UI组件">
-<meta property="og:url" content="http://yoursite.com/2016/11/05/使用React-Native封装原生UI组件/index.html">
-<meta property="og:site_name" content="Remiskalet">
-<meta property="og:description" content="（前言）例子的Demo在这里由于本人工 (不) 作 (会) 忙 (Android开发)，因此下文中的原生组件以iOS为例，Android原生组件也会考虑在后面补上。
-由于篇幅的原因，本文不作React Native的环境搭建和如何创建项目的介绍（我没有前端开发经历哦，相信这点起步也同样难不倒你的），尚未了解的朋友可以参考以下介绍。文中的例子参考了React Native 官网的原文例子，原谅我手笨">
-<meta property="og:image" content="http://p1.bpimg.com/578436/603ed7fbf79d2813.png">
-<meta property="og:image" content="http://p1.bpimg.com/578436/3addc09f128a3b24.png">
-<meta property="og:updated_time" content="2016-11-11T07:05:09.000Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="使用React Native封装原生UI组件">
-<meta name="twitter:description" content="（前言）例子的Demo在这里由于本人工 (不) 作 (会) 忙 (Android开发)，因此下文中的原生组件以iOS为例，Android原生组件也会考虑在后面补上。
-由于篇幅的原因，本文不作React Native的环境搭建和如何创建项目的介绍（我没有前端开发经历哦，相信这点起步也同样难不倒你的），尚未了解的朋友可以参考以下介绍。文中的例子参考了React Native 官网的原文例子，原谅我手笨">
-<meta name="twitter:image" content="http://p1.bpimg.com/578436/603ed7fbf79d2813.png">
+  <meta name="keywords" content="
+  iOS
+  ">
   
-    <link rel="alternative" href="/atom.xml" title="Remiskalet" type="application/atom+xml">
-  
-  
-    <link rel="icon" href="/favicon.png">
-  
-  <link rel="stylesheet" href="/main.css">
+  <meta name="author" content="Remiskalet">
+
+  <meta http-equiv="Cache-Control" content="no-transform"/>
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="theme-color" content="#1e2327">
+  <link rel="apple-touch-icon" href="https://github.githubassets.com/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://github.githubassets.com/apple-touch-icon-180x180.png">
+
+  <link rel="icon" type="image/x-icon" href="https://github.githubassets.com/favicon.ico">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   
 
+  
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/vue/1.0.25-csp/vue.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
 </head>
 
-<body>
-  <div id="container">
-    <div class="left-col">
-      <div class="overlay"></div>
-<div class="intrude-less">
-	<header id="header" class="inner">
-		<a href="/" class="profilepic">
-			
-			<img src="http://p1.bpimg.com/578436/882fef6067194527.jpg" class="js-avatar">
-			
-		</a>
+<body id="replica-app">
 
-		<hgroup>
-		  <h1 class="header-author"><a href="/">Alex Chan</a></h1>
-		</hgroup>
+<nav class="navbar-wrapper">
+  <div class="navbar">
+    <div class="container clearfix">
+      <a href="/" class="navbar-logo"><i class="fa fa-github"></i></a>
 
-		
+      <div class="navbar-search float-left desktop-only">
+        <div class="navbar-search-form">
+          <label for="gsc-i-id1">This website</label>
+          <div id="google-search">
+            <gcse:search></gcse:search>
+          </div>
+        </div>
+      </div>
 
-		<nav class="header-menu">
-			<ul>
-			
-				<li><a href="/">主页</a></li>
-	        
-				<li><a href="/tags/随笔">随笔</a></li>
-	        
-			</ul>
-		</nav>
-		<nav class="header-smart-menu">
-	        
-    		
-    			
-    			<a class="js-smart-menu" data-idx="0" href="javascript:void(0)">所有文章</a>
-    			
-    			
-            
-    			
-    			<a class="js-smart-menu" data-idx="1" href="javascript:void(0)">标签</a>
-    			
-    			
-            
-    			
-    			<a class="js-smart-menu" data-idx="2" href="javascript:void(0)">友链</a>
-    			
-    			
-            
-    			
-    			<a class="js-smart-menu" data-idx="3" href="javascript:void(0)">关于我</a>
-    			
-    			
-            
-		</nav>
-		<nav class="header-nav">
-			<div class="social">
-				
-					<a class="github" target="_blank" href="#" title="github">github</a>
-		        
-					<a class="weibo" target="_blank" href="#" title="weibo">weibo</a>
-		        
-					<a class="rss" target="_blank" href="#" title="rss">rss</a>
-		        
-					<a class="zhihu" target="_blank" href="#" title="zhihu">zhihu</a>
-		        
-			</div>
-		</nav>
-	</header>		
-</div>
+      <ul class="navbar-nav float-left">
+        
+        <li><a href="/archives">Archives</a></li>
+        
+        
+        <li><a href="/categories">Categories</a></li>
+        
+        
+        <li><a href="/tags">Tags</a></li>
+        
+        
+        <li class="desktop-only"><a href="/atom.xml" target="_blank">RSS</a></li>
+        
+      </ul>
 
+      <ul class="navbar-nav user-nav float-right desktop-only">
+        <li class="user-nav-notification">
+          <a><span class="user-nav-unread"></span><i class="fa fa-bell"></i></a>
+        </li>
+        <li>
+          <a><i class="fa fa-plus"></i> <i class="fa fa-caret-down"></i></a>
+        </li>
+        <li class="user-nav-logo">
+          <a><img src="https://octodex.github.com/images/baracktocat.jpg"> <i class="fa fa-caret-down"></i></i></a>
+        </li>
+      </ul>
     </div>
-    <div class="mid-col">
-      <nav id="mobile-nav">
-  	<div class="overlay">
-  		<div class="slider-trigger"><i class="icon-list"></i></div>
-  		<h1 class="header-author js-mobile-header hide">Alex Chan</h1>
-  	</div>
-	<div class="intrude-less">
-		<header id="header" class="inner">
-			<div class="profilepic">
-				
-					<img src="http://p1.bpimg.com/578436/882fef6067194527.jpg" class="js-avatar">
-				
-			</div>
-			<hgroup>
-			  <h1 class="header-author">Alex Chan</h1>
-			</hgroup>
-			
-			<nav class="header-menu">
-				<ul>
-				
-					<li><a href="/">主页</a></li>
-		        
-					<li><a href="/tags/随笔">随笔</a></li>
-		        
-				</ul>
-			</nav>
-			<nav class="header-nav">
-				<div class="social">
-					
-						<a class="github" target="_blank" href="#" title="github">github</a>
-			        
-						<a class="weibo" target="_blank" href="#" title="weibo">weibo</a>
-			        
-						<a class="rss" target="_blank" href="#" title="rss">rss</a>
-			        
-						<a class="zhihu" target="_blank" href="#" title="zhihu">zhihu</a>
-			        
-				</div>
-			</nav>
-		</header>				
-	</div>
+  </div>
 </nav>
 
-      <div class="body-wrap">
-        <article id="post-使用React-Native封装原生UI组件" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="article-title" itemprop="name">
-      使用React Native封装原生UI组件
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
+<div class="main-container">
+  <header class="header-wrapper desktop-only">
+  <div class="container header-site-detail">
+    <ul class="header-toolbar">
+      <li class="clearfix">
+        <a href="/archives" class="header-toolbar-left"><i
+                  class="fa fa-file-text"></i> Posts </a>
+        <a href="/archives"
+           class="header-toolbar-right"> 4 </a>
+      </li>
+      <li>
+        <a href="/tags" class="header-toolbar-left"><i
+                  class="fa fa-tags"></i> Tags </a>
+        <a href="/tags"
+           class="header-toolbar-right"> 2 </a>
+      </li>
+      <li>
+        <a href="/categories" class="header-toolbar-left"><i
+                  class="fa fa-folder-open"></i> Categories </a>
+        <a href="/categories"
+           class="header-toolbar-right"> 2 </a>
+      </li>
+    </ul>
+    <h2 class="header-title">
+      <i class="fa fa-book text-muted"></i>
+      <a href="/">Remiskalet&#39;s blog</a>
       
-        <h3 id="（前言）"><a href="#（前言）" class="headerlink" title="（前言）"></a>（前言）</h3><p>例子的Demo在<a href="https://github.com/ccwinner/react-native-gestureunlock" target="_blank" rel="external">这里</a>由于本人工 (不) 作 (会) 忙 (Android开发)，因此下文中的原生组件以iOS为例，Android原生组件也会考虑在后面补上。</p>
+      
+    </h2>
+  </div>
+
+  <div class="container">
+    <div class="header-tab-wrapper clearfix">
+      <span class="header-tab header-tab-selected"><i class="fa fa-thumbs-o-up"></i> Like</span>
+      <span class="header-tab"><i class="fa fa-share-alt"></i> Share</span>
+      <span class="header-tab"><i class="fa fa-comments-o"></i> Discussion</span>
+      <span class="header-tab"><i class="fa fa-bookmark-o"></i> Bookmark </span>
+      <span class="header-tab"><i class="fa fa-smile-o"></i> Smile <i class="fa fa-caret-down"></i></span>
+    </div>
+  </div>
+</header>
+
+
+<div class="post-container container">
+  <h3>
+    <i class="fa fa-user-o"></i>
+    Remiskalet
+
+    <span class="post-date float-right" title="{{moment(1478341268000).format('MMM DD, YYYY, h:mm:ss A')}}">
+      <i class="fa fa-pencil-square-o"></i>
+      {{moment(1478341268000).fromNow()}}
+    </span>
+  </h3>
+
+  <article class="post-content">
+    <h1>使用React Native封装原生UI组件</h1>
+    <h3 id="（前言）"><a href="#（前言）" class="headerlink" title="（前言）"></a>（前言）</h3><p>例子的Demo在<a href="https://github.com/ccwinner/react-native-gestureunlock" target="_blank" rel="external">这里</a>由于本人工 (不) 作 (会) 忙 (Android开发)，因此下文中的原生组件以iOS为例，Android原生组件也会考虑在后面补上。</p>
 <p>由于篇幅的原因，本文不作<strong>React Native</strong>的环境搭建和如何创建项目的介绍（我没有前端开发经历哦，相信这点起步也同样难不倒你的），尚未了解的朋友可以参考以下介绍。文中的例子参考了<strong>React Native</strong> 官网的原文例子，原谅我手笨，尽管有公司前端同事的大力相助，这个小Demo依然做的磕磕碰碰，Anyway，在经过了两个晚上的不懈努力之后，我完成了预定目标，学到了不少有用的东西。对于这些我决定将自己的总结和教训分享出来，方便大家的学习，促进技术交流。</p>
 <p><a href="http://facebook.github.io/react-native/docs/getting-started.html" target="_blank" rel="external">如何搭建React Native环境</a></p>
 <p><a href="http://facebook.github.io/react-native/docs/tutorial.html" target="_blank" rel="external">React-Native开发的相关知识了解，前端开发的基本概念入门,包括框架介绍，控件布局，样式，网络请求，更多资源参考</a></p>
@@ -184,231 +157,41 @@
 <p>另外一个发送事件的方法是使用<code>eventDispatcher</code>，并在JS代码中注册监听同名的事件。至于这两个方法在封装原生控件这一操作上哪个更好，我还没有得到适合的答案，希望对此熟悉的朋友可以告诉我。</p>
 <p>在这里推荐一个不错的<a href="https://github.com/jondot/awesome-react-native" target="_blank" rel="external">学习React Native的网站</a>，收集了架构，数据流，应用状态的监听等资料介绍。</p>
 
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      <a href="/2016/11/05/使用React-Native封装原生UI组件/" class="archive-article-date">
-  	<time datetime="2016-11-05T10:21:08.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-11-05</time>
-</a>
-      
-      
+  </article>
+</div>
 
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
 
-  
-<nav id="article-nav">
-  
-    <a href="/2017/06/04/weak引发的一点思考/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          __weak引发的一点思考
-        
-      </div>
+    
+
+
+
+
+</div>
+
+<div class="footer-wrapper container">
+  <footer class="footer clearfix">
+    <div class="clearfix">
+    <a href="https://www.linkedin.com/in/%E9%9C%84-%E9%99%88-366363a4" class="footer-logo">
+      <i class="fa fa-github"></i>
     </a>
-  
-  
-    <a href="/2016/10/23/新的开始/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">新的开始</div>
-      <i class="icon-circle-right"></i>
-    </a>
-  
-</nav>
-
-
-
-
-<div class="share_jia">
-	<!-- JiaThis Button BEGIN -->
-	<div class="jiathis_style">
-		<span class="jiathis_txt">Share to: &nbsp; </span>
-		<a class="jiathis_button_facebook"></a> 
-	    <a class="jiathis_button_twitter"></a>
-	    <a class="jiathis_button_plus"></a> 
-	    <a class="jiathis_button_tsina"></a>
-		<a class="jiathis_button_cqq"></a>
-		<a class="jiathis_button_douban"></a>
-		<a class="jiathis_button_weixin"></a>
-		<a class="jiathis_button_tumblr"></a>
-    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
-	</div>
-	<script type="text/javascript" src="//v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
-	<!-- JiaThis Button END -->
+    <ul class="footer-social-link">
+      <li>© 2019 Remiskalet</li>
+      <li><a href="https://www.linkedin.com/in/%E9%9C%84-%E9%99%88-366363a4">Home</a></li>
+      
+    </ul>
+    <div class="footer-theme-info">
+      Theme <a href="//github.com/sabrinaluo/hexo-theme-replica">Replica</a>
+      by <a href="//github.com/sabrinaluo">Hiitea</a> ❤ Powered by Hexo
+    </div>
+    </div>
+    
+  </footer>
 </div>
 
 
 
 
+<script src="/js/main.js"></script>
 
-
-
-
-
-      </div>
-      <footer id="footer">
-  <div class="outer">
-    <div id="footer-info">
-    	<div class="footer-left">
-    		&copy; 2017 Alex Chan
-    	</div>
-      	<div class="footer-right">
-      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
-      	</div>
-    </div>
-  </div>
-</footer>
-    </div>
-    <script>
-	var yiliaConfig = {
-		fancybox: true,
-		mathjax: false,
-		animate: true,
-		isHome: false,
-		isPost: true,
-		isArchive: false,
-		isTag: false,
-		isCategory: false,
-		open_in_new: false,
-		root: "/",
-		innerArchive: true
-	}
-</script>
-
-<script src="/./main.js"></script>
-
-
-    
-<div class="tools-col">
-  <ul class="btn-wrap">
-    
-      <li class="chose" data-hook="tools-section-all"><span class="text">全部</span><i class="icon-book"></i></li>
-    
-    
-      <li data-hook="tools-section-tag"><span class="text">标签</span><i class="icon-price-tags"></i></li>
-    
-    
-      <li data-hook="tools-section-friends"><span class="text">友链</span><i class="icon-link"></i></li>
-    
-    
-      <li data-hook="tools-section-me"><span class="text">我</span><i class="icon-smile"></i></li>
-    
-  </ul>
-  <div class="tools-wrap">
-    
-    	<section class="tools-section tools-section-all chose">
-    	</section>
-    
-
-    
-    	<section class="tools-section tools-section-tag">
-    			<div class="widget tagcloud" id="js-tagcloud">
-    				
-    			</div>
-    	</section>
-    
-
-    
-    	<section class="tools-section tools-section-friends">
-  		
-  			<div class="friends-wrap" id="js-friends">
-  			
-  	          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">友情链接1</a>
-  	        
-  	          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">友情链接2</a>
-  	        
-  	          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">友情链接3</a>
-  	        
-  	          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">友情链接4</a>
-  	        
-  	          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">友情链接5</a>
-  	        
-  	          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">友情链接6</a>
-  	        
-  	        </div>
-  		
-    	</section>
-    
-
-    
-    	<section class="tools-section tools-section-me">
-  	  	
-  	  		<div class="aboutme-wrap" id="js-aboutme">很惭愧&lt;br&gt;&lt;br&gt;只做了一点微小的工作&lt;br&gt;谢谢大家</div>
-  	  	
-    	</section>
-    
-  </div>
-  
-</div>
-    <!-- Root element of PhotoSwipe. Must have class pswp. -->
-<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
-
-    <!-- Background of PhotoSwipe. 
-         It's a separate element as animating opacity is faster than rgba(). -->
-    <div class="pswp__bg"></div>
-
-    <!-- Slides wrapper with overflow:hidden. -->
-    <div class="pswp__scroll-wrap">
-
-        <!-- Container that holds slides. 
-            PhotoSwipe keeps only 3 of them in the DOM to save memory.
-            Don't modify these 3 pswp__item elements, data is added later on. -->
-        <div class="pswp__container">
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-        </div>
-
-        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
-        <div class="pswp__ui pswp__ui--hidden">
-
-            <div class="pswp__top-bar">
-
-                <!--  Controls are self-explanatory. Order can be changed. -->
-
-                <div class="pswp__counter"></div>
-
-                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-
-                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
-
-                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-
-                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-
-                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
-                <!-- element will get class pswp__preloader--active when preloader is running -->
-                <div class="pswp__preloader">
-                    <div class="pswp__preloader__icn">
-                      <div class="pswp__preloader__cut">
-                        <div class="pswp__preloader__donut"></div>
-                      </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-                <div class="pswp__share-tooltip"></div> 
-            </div>
-
-            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
-            </button>
-
-            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-            </button>
-
-            <div class="pswp__caption">
-                <div class="pswp__caption__center"></div>
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
-  </div>
 </body>
 </html>
